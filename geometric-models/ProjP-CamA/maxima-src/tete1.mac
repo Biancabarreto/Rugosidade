@@ -1,0 +1,4 @@
+C:D*tan(theta)*(1+cot(theta-atan(d0/h0))*cot(theta+atan(h0/(c0+d0))));
+Ct:diff(C,theta);
+Cd:diff(C,D);
+Ch0:diff(C,h0);
