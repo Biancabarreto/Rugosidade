@@ -16,11 +16,11 @@ classdef LineDetector  < handle
             obj.IMG_BIN=IMG_BIN;
 
             %% gaussian blur para eliminar cumuls pequenhos
-            obj.IMG_BIN = imsmooth(1.0*obj.IMG_BIN,'Gaussian',1.1);
-            obj.IMG_BIN=(obj.IMG_BIN>0.75);
+            %obj.IMG_BIN = imsmooth(1.0*obj.IMG_BIN,'Gaussian',1.1);
+            %obj.IMG_BIN=(obj.IMG_BIN>0.75);
 
             %% Spline reconstruccin
-            obj.ORDER=7;
+            obj.ORDER=5;
             obj.PARTS=8;
 
         end

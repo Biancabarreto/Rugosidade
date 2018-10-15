@@ -8,23 +8,34 @@ addpath(genpath('lib-mcode'))
 %% Só modifica aquí
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-IMAGEPATH='../images/z510a.bmp';
-NORM_UMBRAL=0.80;
+IMAGEPATH='../images/1cdbw.bmp';
+NORM_UMBRAL=0.60;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% STEP 0
 IMG = imread(IMAGEPATH);
+
 if(length(size(IMG))==3)
-    IMG = rgb2gray(IMG);
+    error('The image should be a binary image. The image has > 1 layers');
 endif
-IMG_BIN=(IMG>(NORM_UMBRAL*max(max(IMG))));
+
+IMG = IMG/max(max(IMG));
+if(max(max(IMG))>1)
+    error('The image should be a binary image. max pixel value > 1');
+endif
+
+if(min(min(IMG))<0)
+    error('The image should be a binary image. max pixel value <0');
+endif
+
+IMG_BIN=IMG>0.5;
 
 %% STEP 1
 R = LineDetector(IMG_BIN);
 
 %% STEP 2
-R.set_reconstruction_parts(8);
+R.set_reconstruction_parts(10);
 [X Y]=R.calculates_curve();
 
 %% STEP 3 (FINAL)
