@@ -1,15 +1,15 @@
 function plot_all_results(IMAGEPATH,IMG_BIN,XREF,YREF,X,Y)
     IMG = imread(IMAGEPATH);
 
-    image(IMG)
-    hold on
-        plot(X,Y,'-s');
-    hold off
-    hold on
-        plot(XREF,YREF,'-o');
-    hold off
+    %image(IMG)
+    %hold on
+    %    plot(X,Y,'-s');
+    %hold off
+    %hold on
+    %    plot(XREF,YREF,'-o');
+    %hold off
 
-    print(gcf,'grafico-real.png','-dpng')
+    %print(gcf,'grafico-real.png','-dpng')
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -28,6 +28,15 @@ function plot_all_results(IMAGEPATH,IMG_BIN,XREF,YREF,X,Y)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     MINY=round(min(Y));
     MAXY=round(max(Y));
+
+    NMAXY=round(MAXY+abs(MAXY-MINY)*0.333);
+    NMINY=round(MINY-abs(MAXY-MINY)*0.333);
+    if NMAXY<=size(IMG_BIN,1);
+        MAXY=NMAXY;    
+    end
+    if NMINY>=1;
+        MINY=NMINY;    
+    end
 
     imagesc(IMG_BIN(MINY:MAXY,:))
     hold on

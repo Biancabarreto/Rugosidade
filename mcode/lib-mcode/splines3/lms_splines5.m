@@ -1,4 +1,4 @@
-function [P XINT]=lms_spline5_func(X,Y,NPARTS,varargin)
+function [P XINT]=lms_spline5(X,Y,NPARTS,varargin)
 
 
     % Retorna la pendiente al inicio e final

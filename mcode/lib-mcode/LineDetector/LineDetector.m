@@ -51,11 +51,8 @@ classdef LineDetector  < handle
         %% Calcula la curva provocada por el objeto
         function [XOPT YOPT]=calculates_curve(obj)
 
-            NCOL=size(obj.IMG_BIN,2);
-            STEP=round(NCOL/obj.PARTS);
-
             
-            [XOPT YOPT]=curve_lms_poly_spline(obj.IMG_BIN,obj.ORDER,STEP);
+            [XOPT YOPT]=curve_lms_poly_spline(obj.IMG_BIN,obj.ORDER,obj.PARTS);
 
         end
 

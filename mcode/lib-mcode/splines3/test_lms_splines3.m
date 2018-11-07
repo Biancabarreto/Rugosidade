@@ -19,7 +19,7 @@ plot(X,Y,'.')
 
 
 NPARTS=12;
-[P XINT]=lms_spline3_func(X,Y,NPARTS);
+[P XINT]=lms_splines3(X,Y,NPARTS);
 
 M=20;
 for II=1:NPARTS
