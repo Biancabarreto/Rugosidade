@@ -18,8 +18,8 @@ figure;
 plot(X,Y,'.')
 
 
-NPARTS=14;
-[P XINT]=lms_spline3_func(X,Y,NPARTS)
+NPARTS=12;
+[P XINT]=lms_spline3_func(X,Y,NPARTS);
 
 M=20;
 for II=1:NPARTS
