@@ -29,16 +29,45 @@ function [P XINT]=lms_splines3(X,Y,NPARTS,varargin)
     %%%%%%%%%%%%%%%%%
     At=[Az;A0;A1;A2];
     Yt=[Yz;Y0;Y1;Y2];
-    C=diag([Cz*3;C0*9;C1*3;C2*1]);
+    C=diag([Cz;C0;C1;C2]);
 
 
     p=inv(At'*C*At)*At'*C*Yt;
+    EE=sqrt(meansq(Yt-At*p));
+    pmin=p;
+    EEmin=EE;
+
+    E=100;
+    ITER=0;
+    disp('SOLVING LMS CUBIC SPLINES: Please wait ...');
+    while (E>=0.01)&&(ITER<3000)
+        plast=p;
+        p=p+inv(At'*C*At+0.00001*eye(length(p)))*At'*C*(Yt-At*p);
+
+        E=100*max(abs(p-plast))/mean(abs(p));
+
+        EEtmp=sqrt(meansq(Yt-At*p));     
+        EE=[EE EEtmp];
+        if(EEtmp<EEmin)
+            EEmin=EEtmp;
+            pmin=p;
+        end
+
+        ITER=ITER+1;
+    end
+
+    figure;
+    plot(EE,'-o');
+    xlabel('Iterations');
+    ylabel('Error');
+
+    disp(['SOLVED LMS CUBIC SPLINES, ITERATIONS: '  num2str(ITER)]);
 
 
     % Finalmente convertimos p em P
     P=zeros(NPARTS,4);
     for II=1:NPARTS
-        P(II,:)=p( (4*(II-1)+1):(4*(II-1)+4) );
+        P(II,:)=pmin( (4*(II-1)+1):(4*(II-1)+4) );
     endfor
 
 endfunction
@@ -85,7 +114,7 @@ function [Y0 A0 C0]=generate_values_0(Xs,Ys,Ws,XINT)
     for II=1:(NPARTS-1)
 
         Y0(II)=0;
-        C0(II)=sum(Ws{II})+sum(Ws{II+1});
+        C0(II)=(sum(Ws{II})+sum(Ws{II+1}))/2;
 
         A0(II,4*(II-1)+1)=XINT(II,2)^3;
         A0(II,4*(II-1)+2)=XINT(II,2)^2;
@@ -112,7 +141,7 @@ function [Y1 A1 C1]=generate_values_1(Xs,Ys,Ws,XINT)
     for II=1:(NPARTS-1)
 
         Y1(II)=0;
-        C1(II)=sum(Ws{II})+sum(Ws{II+1});
+        C1(II)=(sum(Ws{II})+sum(Ws{II+1}))/2;
 
         A1(II,4*(II-1)+1)=3*XINT(II,2)^2;
         A1(II,4*(II-1)+2)=2*XINT(II,2);
@@ -140,7 +169,7 @@ function [Y2 A2 C2]=generate_values_2(Xs,Ys,Ws,XINT)
     for II=1:(NPARTS-1)
 
         Y2(II)=0;
-        C2(II)=sum(Ws{II})+sum(Ws{II+1});
+        C2(II)=(sum(Ws{II})+sum(Ws{II+1}))/2;
 
         A2(II,4*(II-1)+1)=6*XINT(II,2);
         A2(II,4*(II-1)+2)=2;
