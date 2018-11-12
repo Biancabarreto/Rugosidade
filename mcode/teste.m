@@ -9,7 +9,6 @@ addpath(genpath('lib-mcode'))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 IMAGEPATH='../images/8 bits/4cd.bmp';
-NORM_UMBRAL=0.60;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -35,7 +34,7 @@ IMG_BIN=IMG>0.5;
 R = LineDetector(IMG_BIN);
 
 %% STEP 2
-R.set_reconstruction_parts(10);
+R.set_reconstruction_parts(14);
 [X Y]=R.calculates_curve();
 
 %% STEP 3 (FINAL)

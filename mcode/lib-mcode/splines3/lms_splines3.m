@@ -44,7 +44,7 @@ function [P XINT]=lms_splines3(X,Y,NPARTS,varargin)
         plast=p;
         p=p+inv(At'*C*At+0.00001*eye(length(p)))*At'*C*(Yt-At*p);
 
-        E=100*max(abs(p-plast))/mean(abs(p));
+        E=100*max(abs(p-plast))/min(abs(p(abs(p) > 0)));% mean(abs(p));
 
         EEtmp=sqrt(meansq(Yt-At*p));     
         EE=[EE EEtmp];

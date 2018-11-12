@@ -60,6 +60,7 @@ classdef LineDetector  < handle
         %% Intenta deduzir qual es la curva de referencia
         function [XREF YREF]=calculates_curve_ref(obj,X)
 
+            figure;
             image(obj.IMG_BIN*255)
 
             lin=0;col=0;
