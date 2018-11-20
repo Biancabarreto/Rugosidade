@@ -51,18 +51,126 @@ podemos definir as seguintes funções,
 \end{matrix}\right.
 \end{equation}
 \begin{equation}
- S_k(x,\mathbf{P})=P_{4k}+P_{1+4k}~x+P_{2+4k}~x^2+P_{3+4k}~x^3,
+ S_k(x,\mathbf{P})=P_{4k}~x^3+P_{1+4k}~x^2+P_{2+4k}~x+P_{3+4k},
 \end{equation}
 de modo que
 \begin{equation}
  f(x,\mathbf{P},\mathbf{E})=\sum_{k=0}^{M-1} S_k(x,\mathbf{P})G(x,\varepsilon_{k},\varepsilon_{k+1})  
 \end{equation}
 
-\subsection{Calculando os parâmetros $P_j$}
-
+\subsection{Modelando o problema}
+\label{subsec:all}
 Para poder calcular o vetor $\mathbf{P}=\left(\begin{matrix}P_0 & P_1 & P_2 & ...  & P_{4M-1}\end{matrix}\right)^T$, 
-do problema spline descrito  na Seção \ref{sec:spline3method1}, 
-podemos definir as seguintes equações:
+do problema spline descrito  na Seção \ref{sec:spline3method1}, a partir dos dados $(x_n,y_n,w_n)$; 
+$\forall n \in \mathtt{Z},~0\leq n < N$ e escolhidos os valores $\mathbf{E}=\left(\begin{matrix}\varepsilon_0 & \varepsilon_1 & ...  & \varepsilon_{M}\end{matrix}\right)^T$;
+ordenamos nossos dados nos seguintes vetores coluna:
+\begin{equation}
+\mathbf{X}=\left(\begin{matrix}\mathbf{X}_0 \\ \mathbf{X}_1 \\ \vdots  \\ \mathbf{X}_{M-1}\end{matrix}\right),~~
+\mathbf{Y}=\left(\begin{matrix}\mathbf{Y}_0 \\ \mathbf{Y}_1 \\ \vdots  \\ \mathbf{Y}_{M-1}\end{matrix}\right),~~
+\mathbf{W}=\left(\begin{matrix}\mathbf{W}_0 \\ \mathbf{W}_1 \\ \vdots  \\ \mathbf{W}_{M-1}\end{matrix}\right),
+\end{equation}
+onde os elementos de $\mathbf{X}_m$,$\mathbf{Y}_m$,$\mathbf{W}_m$ representam os valores de $(x_n,y_n,w_n)$
+que cumprem $\varepsilon_m \leq x_n \leq \varepsilon_{m+1}$.
+
+
+\subsubsection{Equação que relacionam os dados }
+\label{subsubsec:partz}
+Os dados $(x_n,y_n)$ são agrupados em $\mathbf{Y}=\mathbf{A}\mathbf{P}$, onde,
+\begin{equation}
+\mathbf{A}_m =\left(\begin{matrix}
+\mathbf{X}_m^3 & \mathbf{X}_m^2 & \mathbf{X}_m & \mathbf{1}
+\end{matrix}\right)
+\end{equation}
+\begin{equation}
+\mathbf{A} =\left(\begin{matrix}
+\mathbf{A}_0 & \mathbf{0}   & \mathbf{0}   & \dots & \mathbf{0} \\
+\mathbf{0}   & \mathbf{A}_1 & \mathbf{0}   & \dots & \mathbf{0} \\
+\mathbf{0}   & \mathbf{0}   & \mathbf{A}_2 & \dots & \mathbf{0} \\
+\mathbf{0}   & \mathbf{0}   & \mathbf{0}   & \dots & \mathbf{A}_{M-1} \\
+\end{matrix}\right)
+\end{equation}
+
+\subsubsection{Equação de continuidade dos splines consecutivos}
+\label{subsubsec:part0}
+Dados os polinômios $S_{k-1}(x,\mathbf{P})$ e $S_{k}(x,\mathbf{P})$ do $(k-1)$-essimo e $k$-essimo spline,
+respetivamente. Podemos igualar ambos polinômios para garantir a continuidade dos splines em $x=\varepsilon_{k}$, 
+de modo que,
+\begin{equation}
+ S_{k-1}(\varepsilon_{k},\mathbf{P})=S_{k}(\varepsilon_{k},\mathbf{P})
+\end{equation}
+Assim, agrupando as equações dos polinômios de  $0<k<M$, obtemos $\mathbf{0}=\mathbf{B}_0 \mathbf{P}$, onde,
+\begin{equation}
+\mathbf{B}_0 =\left(\begin{matrix}
+\mathbf{E}_1 & -\mathbf{E}_1   & \mathbf{0}    &  \mathbf{0}   & \dots & \mathbf{0} & \mathbf{0}\\
+\mathbf{0}   &  \mathbf{E}_2   & -\mathbf{E}_2 &  \mathbf{0}   & \dots & \mathbf{0} & \mathbf{0}\\
+\mathbf{0}   &  \mathbf{0}     &  \mathbf{E}_3 & -\mathbf{E}_3 & \dots & \mathbf{0} & \mathbf{0}\\
+\vdots       &  \vdots         &  \vdots       &  \vdots       & \dots & \vdots     & \vdots\\
+\mathbf{0}   &  \mathbf{0}     &  \mathbf{0}   &  \mathbf{0}   & \dots & \mathbf{E}_{M-1} & -\mathbf{E}_{M-1} \\
+\end{matrix}\right),
+\end{equation}
+usando como variável auxiliar,
+\begin{equation}
+\mathbf{E}_k =\left(\begin{matrix}
+\varepsilon^3_k & \varepsilon^2_k   & \varepsilon_k & 1  \\
+\end{matrix}\right).
+\end{equation}
+
+\subsubsection{Equação de continuidade da 1ra derivada dos splines consecutivos}
+\label{subsubsec:part1}
+Dados os polinômios $S_{k-1}(x,\mathbf{P})$ e $S_{k}(x,\mathbf{P})$ do $(k-1)$-essimo e $k$-essimo spline,
+respetivamente. Podemos igualar a primeira derivada de  ambos polinômios para garantir a continuidade dos splines em $x=\varepsilon_{k}$, 
+de modo que,
+\begin{equation}
+ \left.\frac{\partial~S_{k-1}(x,\mathbf{P})}{\partial x}\right|_{x=\varepsilon_{k}} = 
+ \left.\frac{\partial~S_{k}  (x,\mathbf{P})}{\partial x}\right|_{x=\varepsilon_{k}}
+\end{equation}
+Assim, agrupando as equações dos polinômios de  $0<k<M$, obtemos $\mathbf{0}=\mathbf{B}_1 \mathbf{P}$, onde,
+\begin{equation}
+\mathbf{B}_1 =\left(\begin{matrix}
+\partial\mathbf{E}_1 & -\partial\mathbf{E}_1   & \mathbf{0}    &  \mathbf{0}   & \dots & \mathbf{0} & \mathbf{0}\\
+\mathbf{0}   &  \partial\mathbf{E}_2   & -\partial\mathbf{E}_2 &  \mathbf{0}   & \dots & \mathbf{0} & \mathbf{0}\\
+\mathbf{0}   &  \mathbf{0}     &  \partial\mathbf{E}_3 & -\partial\mathbf{E}_3 & \dots & \mathbf{0} & \mathbf{0}\\
+\vdots       &  \vdots         &  \vdots       &  \vdots       & \dots & \vdots     & \vdots\\
+\mathbf{0}   &  \mathbf{0}     &  \mathbf{0}   &  \mathbf{0}   & \dots & \partial\mathbf{E}_{M-1} & -\partial\mathbf{E}_{M-1} \\
+\end{matrix}\right),
+\end{equation}
+usando como variável auxiliar,
+\begin{equation}
+\partial\mathbf{E}_k =\left(\begin{matrix}
+3\varepsilon^2_k & 2\varepsilon_k   & 1 & 0  \\
+\end{matrix}\right).
+\end{equation}
+
+\subsubsection{Equação de continuidade da 2da derivada dos splines consecutivos}
+\label{subsubsec:part2}
+Dados os polinômios $S_{k-1}(x,\mathbf{P})$ e $S_{k}(x,\mathbf{P})$ do $(k-1)$-essimo e $k$-essimo spline,
+respetivamente. Podemos igualar a segunda derivada de ambos polinômios para garantir a continuidade dos splines em $x=\varepsilon_{k}$, 
+de modo que,
+\begin{equation}
+ \left.\frac{\partial^2~S_{k-1}(x,\mathbf{P})}{\partial x^2}\right|_{x=\varepsilon_{k}} = 
+ \left.\frac{\partial^2~S_{k}  (x,\mathbf{P})}{\partial x^2}\right|_{x=\varepsilon_{k}}
+\end{equation}
+Assim, agrupando as equações dos polinômios de  $0<k<M$, obtemos $\mathbf{0}=\mathbf{B}_2 \mathbf{P}$, onde,
+\begin{equation}
+\mathbf{B}_2 =\left(\begin{matrix}
+\partial^2\mathbf{E}_1 & -\partial^2\mathbf{E}_1   & \mathbf{0}    &  \mathbf{0}   & \dots & \mathbf{0} & \mathbf{0}\\
+\mathbf{0}   &  \partial^2\mathbf{E}_2   & -\partial^2\mathbf{E}_2 &  \mathbf{0}   & \dots & \mathbf{0} & \mathbf{0}\\
+\mathbf{0}   &  \mathbf{0}     &  \partial^2\mathbf{E}_3 & -\partial^2\mathbf{E}_3 & \dots & \mathbf{0} & \mathbf{0}\\
+\vdots       &  \vdots         &  \vdots       &  \vdots       & \dots & \vdots     & \vdots\\
+\mathbf{0}   &  \mathbf{0}     &  \mathbf{0}   &  \mathbf{0}   & \dots & \partial^2\mathbf{E}_{M-1} & -\partial^2\mathbf{E}_{M-1} \\
+\end{matrix}\right),
+\end{equation}
+usando como variável auxiliar,
+\begin{equation}
+\partial^2\mathbf{E}_k =\left(\begin{matrix}
+6\varepsilon_k & 2   & 0 & 0  \\
+\end{matrix}\right).
+\end{equation}
+
+
+\subsection{Calculando os parâmetros $P_j$}
+Agrupando os resultados da  Seção \ref{subsec:all}, 
+podemos definir a seguinte equação,
 \begin{equation}
 \left(\begin{matrix}
 \mathbf{Y} \\
@@ -77,6 +185,18 @@ podemos definir as seguintes equações:
 \mathbf{B}_2 
 \end{matrix}\right) \mathbf{P}
 \end{equation}
+ou seu equivalente, $\mathbf{Z} = \mathbf{Q}  \mathbf{P}$. Onde a única incógnita é $\mathbf{P}$.
 
+Para resolver este problema aplicamos $LMS$ (Least Mean Square) a equação, para isso
+definimos a  regra de minimização $e(\mathbf{P})$,
+\begin{equation}
+ e(\mathbf{P})=||\mathbf{Z} -\mathbf{Q}  \mathbf{P} ||_{diag(\mathbf{W})}^2+\alpha || \mathbf{P}-\mathbf{P}_{*} ||.
+\end{equation}
+Onde $\mathbf{P}_{*}$ é o valor de $\mathbf{P}$ na iteração anterior. Assim, aplicando
+$LMS$ e a regularização de Tikhonov, o mínimo valor de $\mathbf{P}$ se obtêm iterativamente usando a seguinte equação
+\begin{equation}
+\mathbf{P}_{k+1}= \mathbf{P}_{k}+ \left[ \mathbf{Q}^T diag(\mathbf{W})\mathbf{Q} +\alpha \mathbf{I} \right]^{-1} \mathbf{Q}^T diag(\mathbf{W})  \left[ \mathbf{Z}-\mathbf{Q}  \mathbf{P}_{k} \right]
+\end{equation}
+ate que os vetores $\mathbf{P}_{k}$ e $\mathbf{P}_{k+1}$ sejam muito próximos.
 
 \end{document}
