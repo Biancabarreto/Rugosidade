@@ -13743,7 +13743,7 @@ funC(GMAP(:,i-1),Set)#</dia:string>
           <dia:point val="35,51"/>
         </dia:attribute>
         <dia:attribute name="obj_bb">
-          <dia:rectangle val="35,50.1878;64.6047,58.6577"/>
+          <dia:rectangle val="35,50.2125;64.58,58.6083"/>
         </dia:attribute>
         <dia:attribute name="text">
           <dia:composite type="text">
@@ -14994,7 +14994,7 @@ lin  lin+1#</dia:string>
           <dia:point val="-4,55"/>
         </dia:attribute>
         <dia:attribute name="obj_bb">
-          <dia:rectangle val="-4.02469,54.1878;3.14,60.541"/>
+          <dia:rectangle val="-4,54.2125;3.14,60.4917"/>
         </dia:attribute>
         <dia:attribute name="text">
           <dia:composite type="text">

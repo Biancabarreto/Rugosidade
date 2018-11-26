@@ -19,6 +19,114 @@
 
 \end{abstract}
 
+
+\section{Calculando o peço dos cúmulos}
+\label{sec:cumulos}
+Dada uma imagem  em branco e preto ($\mathbf{M}$), como mostrado na
+Figura \ref{fig:moticacion}, 
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.33]{moticacion.eps}
+\caption{Imagem em branco e preto ($\mathbf{M}$), Imagem com cúmulos formados 
+por grupos de pixels brancos ($\mathbf{GMAP}$) }
+\label{fig:moticacion}
+\end{figure}
+com valores binários 
+onde os pixels com cor branca tem valor $1$ e com cor preta $0$. 
+Se desejamos obter uma imagem com cúmulos formados pelos grupos de pixels brancos ($\mathbf{GMAP}$); onde 
+cada pixel é mapeado com um índice $ID$ ( na figura este $ID$ está representado 
+com uma cor); devemos seguir o procedimento das seguintes seções.
+
+\subsection{Modelando o problema}
+\label{subsec:part1}
+
+Nosso problema principal é obter, a partir de uma matriz $\mathbf{M}$, 
+ uma matriz $\mathbf{GMAP}$ onde cade elemento contem
+o índice do cúmulo ao qual pertence, como mostra a Figura \ref{fig:moticacion}.
+Assim, pra cumprir este objetivo são usadas as funções $funA$ e $funB$, como mostra  a
+Figura \ref{fig:modelocumulos}, onde são analisadas de maneira sequencial as colunas $\mathbf{M}(:,i)$ da
+matriz $\mathbf{M}$, desde $i=0$ ate $i=N_{col}-1$, 
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.25]{DiagramaCompleto.eps}
+\caption{Diagrama de fluxo del algoritmo de criação de cúmulos }
+\label{fig:modelocumulos}
+\end{figure}
+
+A função $funA$ recebe como parâmetro de entrada a coluna $\mathbf{M}(:,0)$
+(primeira coluna da matriz $\mathbf{M}$)
+e retorna o valor dos índices em $\mathbf{GMAP}(:,0)$,
+adicionalmente a função retorna o valor do maior índice atribuído nas operações ($MAX\_ID$).
+
+Por outro lado a função $funB$ recebe como parâmetros de entrada a $i$-essima 
+coluna ($\mathbf{M}(:,i)$) de $\mathbf{M}$, o mapa de índices $\mathbf{GMAP}(:,0:(i-1))$
+que abrange informações de índice desde a primeira coluna ate a $(i-1)$-essima 
+o valor do maior índice conhecido ate o momento, a função retorna
+o a matriz $\mathbf{GMAP}(:,0:i)$ com os dados dos índices desde a primeira coluna ate a $i$-essima,
+adicionalmente a função retorna o valor do maior índice atribuído nas operações ($MAX\_ID$).
+
+\subsubsection{Algoritmo da função $funA$}
+\label{subsubsec:funA}
+A função $funA$ recebe um vetor coluna $\mathbf{V}$ com uns e zeros, como é exemplificado na
+Figura \ref{fig:funA}, na saída a função retorna um vetor $\mathbf{LMAP}$ com o mesmo tamanho
+porem com elementos com valores inteiros, representado estes o mapeamento dos índices dos elementos em $\mathbf{V}$,
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.33]{funA.eps}
+\caption{Descrição da função $funA$ }
+\label{fig:funA}
+\end{figure}
+os elementos em $\mathbf{V}$ com valor zero recebem automaticamente um índice de valor $0$,
+já se uma região de uns em $\mathbf{V}$, estão isolados, estes recebem em $\mathbf{LMAP}$ um índice
+com um valor maior em uma unidade do ultimo índice achado; a função $funA$ também retorna
+ o máximo índice estabelecido ($MAX\_ID$).
+
+\subsubsection{Algoritmo da função $funB$}
+\label{subsubsec:funB}
+A função $funB$ recebe como parâmetros de entrada, um vetor $\mathbf{M}(:,i)$ correspondente a 
+$i$-essima coluna da matriz $\mathbf{M}$, uma matriz $\mathbf{GMAP}(:,0:(i-1))$ com o mapa de grupos
+desde a primeira coluna ate a $(i-1)$-essima coluna da matriz $\mathbf{GMAP}$, 
+e o máximo índice $MAX\_ID$ nos elementos da matriz $\mathbf{GMAP}(:,0:(i-1))$, 
+como é exemplificado na
+Figura \ref{fig:funB}. Na saída a função retorna uma matriz $\mathbf{GMAP}(:,0:i)$ com o mapa de grupos
+desde a primeira coluna ate a $i$-essima coluna da matriz $\mathbf{GMAP}$, 
+e o novo máximo índice $MAX\_ID$ nos elementos da matriz $\mathbf{GMAP}(:,0:i)$.
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.25]{funB.eps}
+\caption{Descrição da função $funB$ }
+\label{fig:funB}
+\end{figure}
+A função $funB$ analisa os elementos do vetor $\mathbf{M}(:,i)$, desde a primeira
+linha ate a linha $M\_NLIN$, mediante as funções auxiliares $funB1$, $funB2$ e $funB3$,
+estas funções modificam o conteúdo da matriz $\mathbf{GMAP}(:,0:i)$ e a variável $MAX\_ID$.
+
+\textbf{Algoritmo da função $funB1$}:
+A função recebe como para metros de entrada os vetores $\mathbf{M}(:,i)$, $\mathbf{GMAP}(:,i)$
+e uma variável com a linha $lin$ onde inciara o analises.
+Se existem zeros em $\mathbf{M}(:,i)$, então se escrevem zeros nos elementos na mesma posição 
+do vetor $\mathbf{GMAP}(:,i)$.
+Figura \ref{fig:funB1}
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.25]{funB1.eps}
+\caption{Descrição da função $funB1$ }
+\label{fig:funB1}
+\end{figure}
+
+\textbf{Algoritmo da função $funB2$}:
+Verifico si existem uns; e acho o conjunto de ID globais ligados a esse grupo de uns,
+adicionalmente é contada a quantidade de uns.
+Figura \ref{fig:funB2}
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.25]{funB2.eps}
+\caption{Descrição da função $funB$ }
+\label{fig:funB2}
+\end{figure}
+
+\subsection{Calculando a matriz $\mathbf{GMAP}$ e $\mathbf{W}$}
+
 \section{least-squares fitting of cubic splines (Method 1)}
 \label{sec:spline3method1}
 
