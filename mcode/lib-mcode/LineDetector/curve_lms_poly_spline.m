@@ -29,7 +29,7 @@
     
             %% Avaliando polinomios no intervalos
             disp('Avaliando Splines 3r ordem (P,XINT) ...');
-            XOPT=[round(min(min(XINT*NCOL))):round(max(max(XINT*NCOL)))];
+            XOPT=[1:NCOL];
             YOPT = eval_splines(P,XINT,XOPT/NCOL);
 
             %YMAX=size(IMG_BIN,1);

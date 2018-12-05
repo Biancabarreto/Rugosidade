@@ -50,7 +50,6 @@ classdef LineDetector  < handle
 
         %% Calcula la curva provocada por el objeto
         function [XOPT YOPT]=calculates_curve(obj)
-
             
             [XOPT YOPT]=curve_lms_poly_spline(obj.IMG_BIN,obj.ORDER,obj.PARTS);
 
@@ -58,6 +57,8 @@ classdef LineDetector  < handle
 
 
         %% Intenta deduzir qual es la curva de referencia
+        %% Pide que el usuario seleccione 2 puntos
+        %% XREF == X
         function [XREF YREF]=calculates_curve_ref(obj,X)
 
             figure;
