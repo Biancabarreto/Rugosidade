@@ -35,6 +35,7 @@ R = LineDetector(IMG_BIN);
 
 %% STEP 2
 R.set_reconstruction_parts(14);
+R.set_reconstruction_level(0);
 [X Y]=R.calculates_curve();
 
 %% STEP 3 (FINAL)
