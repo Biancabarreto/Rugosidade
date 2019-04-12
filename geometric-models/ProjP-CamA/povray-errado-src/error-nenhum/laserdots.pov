@@ -14,7 +14,7 @@
     {
         <0.0, 5*CUBO_LADO, POSITION_DEEP>   // Position
         #if (Cntr/2=int(Cntr/2))
-        color Green*3           // Color and intensity multiplicator
+        color Red*3           // Color and intensity multiplicator
 
         #else
         color Green*3           // Color and intensity multiplicator
