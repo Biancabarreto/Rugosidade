@@ -21,10 +21,10 @@ classdef LineDetector  < handle
             %obj.IMG_BIN = imsmooth(1.0*obj.IMG_BIN,'Gaussian',1.1);
             %obj.IMG_BIN=(obj.IMG_BIN>0.75);
 
-            %% Spline reconstruccin
+            %% Spline reconstruction
             obj.CUMULUSON=true;
 
-            %% Spline reconstruccin
+            %% Spline reconstruction
             obj.ORDER=5;
             obj.PARTS=8;
             obj.LEVEL=1;
@@ -32,9 +32,13 @@ classdef LineDetector  < handle
         end
 
         %% Calcula la curva provocada por el objeto
-        function [XOPT YOPT]=calculates_curve(obj)
+        function [XOPT YOPT]=calculates_curve(obj,varargin)
             
-            [XOPT YOPT]=curve_lms_poly_spline(obj.IMG_BIN,obj.ORDER,obj.PARTS,obj.CUMULUSON,obj.LEVEL);
+            [XOPT YOPT]=curve_lms_poly_spline(  obj.IMG_BIN, ...    %% Imagen binaria
+                                                %obj.ORDER, ...      %% polinomies order
+                                                obj.PARTS, ...      %% Parts of curve
+                                                obj.CUMULUSON, ...  %% Active cumulus algorithm 
+                                                obj.LEVEL);         %% Level o analysis 
 
         end
 
@@ -44,7 +48,7 @@ classdef LineDetector  < handle
         %% XREF == X
         function [XREF YREF]=calculates_curve_ref(obj,X)
 
-            figure;
+            %figure;
             image(obj.IMG_BIN*255)
 
             lin=0;col=0;
