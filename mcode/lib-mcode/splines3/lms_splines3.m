@@ -48,11 +48,18 @@ function [P XINT]=lms_splines3(X,Y,NPARTS,WS,LEVEL)
     EE=sqrt(meansq(Yt-At*p));
     pmin=p;
     EEmin=EE;
+    EEtmp=EE;
 
     E=100;
     ITER=0;
+    ITERMAX=20000;
+
     disp('SOLVING LMS CUBIC SPLINES: Please wait ...');
-    while (E>=0.01)&&(ITER<10000)
+    while (E>=0.01)&&(ITER<ITERMAX)
+
+        if mod(ITER,100)==0
+            fprintf(stdout,'ITER %5d of %5d. E:%6.3f\r',ITER,ITERMAX,E);
+        end
         plast=p;
         p=p+inv(At'*C*At+0.00001*eye(SIZEP))*At'*C*(Yt-At*p);
 
@@ -67,6 +74,8 @@ function [P XINT]=lms_splines3(X,Y,NPARTS,WS,LEVEL)
 
         ITER=ITER+1;
     end
+    fprintf(stdout,'ITER %5d of %5d. E:%6.3f\n',ITER,ITERMAX,E);
+    %fprintf(stdout,'\nSOLVED LMS CUBIC SPLINES [OK]\n');
 
     %figure;
     %plot(EE,'-o');

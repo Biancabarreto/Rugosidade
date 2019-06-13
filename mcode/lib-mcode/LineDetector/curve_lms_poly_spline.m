@@ -56,6 +56,8 @@
             disp('Avaliando Splines 3r ordem (P,XINT) ...');
             XOPT=[1:NCOL];
             YOPT = eval_splines(P,XINT,XOPT/NCOL);
+            
+            disp('Solved LMS [OK]');
         
         endfunction
 
@@ -73,8 +75,9 @@
             endfor
 
             imagesc(IMG_BIN);
+            daspect([1 1 1])
             hold on;
-            plot((XVAR*WW)',YVAR','-o');
+            plot((XVAR*WW)',YVAR');%,'-o');
             hold off;
         endfunction
 

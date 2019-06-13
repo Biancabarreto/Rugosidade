@@ -19,6 +19,10 @@ function IMG_BIN=function_check_binary_image(IMG)
         error('The image should be a binary image. max pixel value <0');
     endif
 
-   
-    IMG_BIN=(IMG_BIN>0.5);
+    MEAN=mean(mean(IMG_BIN));
+    if(MEAN>0.5)
+    IMG_BIN=(IMG_BIN<0.5);
+    else
+    IMG_BIN=(IMG_BIN>=0.5);
+    end
 endfunction

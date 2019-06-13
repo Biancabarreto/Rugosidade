@@ -81,6 +81,60 @@ classdef LineDetector  < handle
             YREF=polyval (K',XREF);           
         end
 
+        %% Intenta deduzir uma linha reta desde pontos isolados
+        %% XREF == EIXO X COMLETO desde 1
+        function [XREF YREF PP]=calculates_line_ref_automatically(obj,XX,CUMULUSON=false)
+
+            XOPT=0; 
+            YOPT=0;
+
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %% obtenndo unos (XS,YS), todos os pixels brancos
+            %% retorna um vetor coluna para XS e YS.
+            disp('Obtendo unos (XS,YS) ...');
+            [YS,XS] = find(obj.IMG_BIN);
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %% Obtendo pesos de uns WS, 
+            %% o peso de todos os pixels brancos.
+            %% retorna um vetor coluna para WS.
+            WS=zeros(size(XS));
+            N=length(WS);
+            if(CUMULUSON==true)
+                disp('Obtendo cumulos (WS) ...');
+                C = Cumulus(obj.IMG_BIN);
+                [MAP ID WID]= C.calculate_cumulus();
+                MAXWID=max(WID(2:end));
+                for II=1:N
+                    WS(II)=WID(MAP(YS(II),XS(II))+1)/MAXWID;
+                endfor
+            else
+                for II=1:N
+                    WS(II)=1.0;
+                endfor
+            end
+            fprintf(stdout,'\n');
+
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            At=[XS,ones(size(XS))];
+            WW=diag(WS);
+            PP=inv(At'*WW*At+0.00001*eye(2))*At'*WW*YS;
+            
+            XREF=XX;
+            YREF=polyval(PP,XREF);
+
+
+            imagesc(obj.IMG_BIN);
+            daspect([1 1 1])
+            hold on;
+            plot(XREF,YREF);%,'-o');
+            hold off;
+
+        end
+
         %%%%%%%%%%%%%%%%%%%%%% SET %%%%%%%%%%%%%%%%%%%%%%%%%
         %% Establee 
         function set_reconstruction_cumulus_on(obj,CUMULUSON)
