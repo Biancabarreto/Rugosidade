@@ -18,7 +18,10 @@ classdef Cumulus  < handle
             obj.GMAP=0*obj.IMG_BIN;
             obj.MAX_GMAP=0;
         end
-
+        
+        %% ID : É a lista de ID=[0 1 2 ID_MAX] %% cumulos formados por 0s tienen ID=0.
+        %% MAP: É o mapa de com o ID para cada pixel.
+        %% W: É o peso que tem cada ID.
         function [MAP ID W]= calculate_cumulus(obj)
             NLIN=size(obj.GMAP,1);
             NCOL=size(obj.GMAP,2);  
