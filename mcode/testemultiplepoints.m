@@ -60,14 +60,17 @@ for II=(INITN+[0:(N-1)])
     endif
 
     DATAPART=[X',Y',Z'-polyval(P,X')];
-    outdatafile=fullfile(OUTPUTDIR,['dataxyz' num2str(II) '.dat']);
-    save ('-ascii',outdatafile, 'DATAPART');
+    datafile=fullfile(OUTPUTDIR,['dataxyz' num2str(II) '.dat']);
+    fprintf(stdout,'\nSaving DATA in:%s\n',datafile);
+    save ('-ascii',datafile, 'DATAPART');
+    fprintf(stdout,'DATA saved [OK]\n',datafile);
 
 end
 
-
+fprintf(stdout,'\nSaving DATA in:%s\n',outdatafile);
 DATA=[XX,YY,ZZ];
 save ('-ascii',outdatafile, 'DATA');
+fprintf(stdout,'DATA saved [OK]\n',outdatafile);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% dados :

@@ -7,7 +7,7 @@ addpath(genpath('lib-mcode'))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Só modifica aquí
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-N=20;
+N=21;
 INITN=14;
 
 OUTPUTDIR='output3d';
@@ -45,8 +45,16 @@ for II=(INITN+[0:(N-1)])
     R.set_reconstruction_parts(14); %% Estabelecer em quantas partes será reconstruido
     R.set_reconstruction_level(0);  %% Estabelecer o nivel de reconstrução
     R.set_reconstruction_umbral(32); %% para aceptar cumulos
+
     figure;
     [X Z]=R.calculates_curve();     %% detetar pontos da curva
+    if(min(Z)<1)
+        error('ERROR obtaining the curve. min(Z)<1');
+    endif
+    if(max(Z)>size(IMG_REF,1))
+        error('ERROR obtaining the curve. min(Z)>size(IMG_OBJ,1)');
+    endif
+
     Y=(II-INITN)*ones(size(X));
 
     if(II==INITN)
@@ -61,14 +69,19 @@ for II=(INITN+[0:(N-1)])
     print(gcf,fullfile(OUTPUTDIR,['img_' num2str(II) '.png']),'-dpng');
 
     DATAPART=[X',Y',Z'-polyval(P,X')];
-    outdatafile=fullfile(OUTPUTDIR,['dataxyz' num2str(II) '.dat']);
-    save ('-ascii',outdatafile, 'DATAPART');
+    datafile=fullfile(OUTPUTDIR,['dataxyz' num2str(II) '.dat']);
+    fprintf(stdout,'\nSaving DATA in:%s\n',datafile);
+    save ('-ascii',datafile, 'DATAPART');
+    fprintf(stdout,'DATA saved [OK]\n',datafile);
+
 end
 
-
+fprintf(stdout,'\nSaving DATA in:%s\n',outdatafile);
 DATA=[XX,YY,ZZ];
 save ('-ascii',outdatafile, 'DATA');
+fprintf(stdout,'DATA saved [OK]\n',outdatafile);
 
+close all
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% dados :
 %% outdatafile

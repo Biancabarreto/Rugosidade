@@ -62,7 +62,7 @@
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             %% Avaliando polinomios no intervalos
             disp('Avaliando Splines 3r ordem (P,XINT) ...');
-            XOPT=[1:NCOL];
+            XOPT=[min(XS):max(XS)];
             YOPT = eval_splines(P,XINT,XOPT/NCOL);
             
             disp('Solved LMS [OK]');
@@ -83,6 +83,7 @@
             endfor
 
             imagesc(IMG_BIN);
+            colormap(gray)
             daspect([1 1 1])
             hold on;
             plot((XVAR*WW)',YVAR');%,'-o');

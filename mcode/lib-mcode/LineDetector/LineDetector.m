@@ -7,6 +7,7 @@ classdef LineDetector  < handle
         ORDER
         PARTS
         LEVEL
+        UMBRAL
     end
 
 
@@ -129,6 +130,7 @@ classdef LineDetector  < handle
 
 
             imagesc(obj.IMG_BIN);
+            colormap(gray)
             daspect([1 1 1])
             hold on;
             plot(XREF,YREF);%,'-o');
