@@ -29,10 +29,10 @@ classdef PointsDetector  < handle
         end
 
         %% Calcula la curva provocada por el objeto
-        function [XOPT YOPT]=calculates_points(obj,CUMULUSON=false)
+        function [XOPT YOPT]=calculates_points(obj)
             
-
-            [XS YS WS IMG_BIN_TEMP MAP ID WID]=obj.private_function(CUMULUSON);
+            %obj.CUMULUSON=CUMULUSON;
+            [XS YS WS IMG_BIN_TEMP MAP ID WID]=obj.private_function();
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -71,9 +71,10 @@ classdef PointsDetector  < handle
 
         %% Intenta deduzir uma linha reta desde pontos isolados
         %% XREF == EIXO X COMLETO desde 1
-        function [XREF YREF PP]=calculates_line_ref_automatically(obj,XX,CUMULUSON=false)
+        function [XREF YREF PP]=calculates_line_ref_automatically(obj,XX)
 
-            [XS YS WS IMG_BIN_TEMP]=obj.private_function(CUMULUSON);
+            
+            [XS YS WS IMG_BIN_TEMP]=obj.private_function();
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -144,29 +145,40 @@ classdef PointsDetector  < handle
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function [XS YS WS IMG_BIN_TEMP MAP ID WID]=private_function(obj,CUMULUSON=false)
+        function [XS YS WS IMG_BIN_TEMP MAP ID WID]=private_function(obj)
             XOPT=0; 
             YOPT=0;
-
+            
+            if(obj.CUMULUSON==true)
+                disp('*** CUMULUS STATE: true')
+            else
+                disp('*** CUMULUS STATE: false')
+            end
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             %% obtenndo unos (XS,YS), todos os pixels brancos
             %% retorna um vetor coluna para XS e YS.
             disp('Obtendo unos (XS,YS) ...');
             [YS,XS] = find(obj.IMG_BIN);
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+            
             NUM_OF_POINTS=sum(sum(obj.IMG_BIN));
-
+            
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             %% Obtendo pesos de uns WS, 
             %% o peso de todos os pixels brancos.
             %% retorna um vetor coluna para WS.
             WS=zeros(size(XS));
             N=length(WS);
-            if(CUMULUSON==true)
+            
+            MAP=obj.IMG_BIN;
+            ID=[0 1];
+            PESO=sum(sum(obj.IMG_BIN))
+            WID=[size(obj.IMG_BIN,1)*size(obj.IMG_BIN,2)-PESO, PESO];
+            
+            if(obj.CUMULUSON==true)
                 disp('Obtendo cumulos (WS) ...');
                 C = Cumulus(obj.IMG_BIN);
-
+            
                 %% MAP: É o mapa de com o ID para cada pixel.
                 %% ID : É a lista de ID=[0 1 2 ID_MAX] %% cumulos formados por 0s tienen ID=0.
                 %% WID: É o peso que tem cada ID.
@@ -180,9 +192,9 @@ classdef PointsDetector  < handle
                     WS(II)=NUM_OF_POINTS;
                 endfor
             end
-
+            
             fprintf(stdout,'\n');
-
+            
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             %% Eliminar elementos con valor de cumulos menor 
             %% a un valor.
@@ -190,12 +202,12 @@ classdef PointsDetector  < handle
             XS=XS(POS);
             YS=YS(POS);
             WS=WS(POS);
-
+            
             if(length(XS)<obj.UMBRAL)
                 error('Number of points it is too low.');
             end
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+                
             IMG_BIN_TEMP=zeros(size(obj.IMG_BIN));
             for II=1:length(XS)
                 IMG_BIN_TEMP(YS(II),XS(II))=1;
