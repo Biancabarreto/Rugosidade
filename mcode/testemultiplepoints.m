@@ -41,10 +41,11 @@ for II=(INITN+[0:(N-1)])
     fprintf(stdout,'\nWorking file:%s\n',imagefilename{II-INITN+1});
 
     R = PointsDetector(IMG_OBJ{II-INITN+1});      %% Crio um line detector R
+    R.set_reconstruction_cumulus_on(true);
     R.set_reconstruction_umbral(32);
 
     figure(2);
-    [X Z]=R.calculates_points(true);
+    [X Z]=R.calculates_points();
     print(gcf,fullfile(OUTPUTDIR,['img_' num2str(II) '.png']),'-dpng');
 
     Y=(II-INITN)*ones(size(X));
