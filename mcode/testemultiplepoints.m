@@ -7,8 +7,10 @@ addpath(genpath('lib-mcode'))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Só modifica aquí
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-N=20;
-INITN=14;
+N=40;
+INITN=0;
+REFIMAGE='0a.bmp';
+DIRIMAGES='/home/fernando/Downloads/drive-download-20190708T165253Z-001/Compost barn/16';
 
 OUTPUTDIR='output3dpoint';
 outdatafile=fullfile(OUTPUTDIR,'dataxyz.dat');
@@ -16,11 +18,11 @@ outdatafile=fullfile(OUTPUTDIR,'dataxyz.dat');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 mkdir(OUTPUTDIR);
 
-IMG_REF = imread('../images/placa1/0.jpg (green).bmp');
+IMG_REF = imread(fullfile(DIRIMAGES,REFIMAGE));
 IMG_REF =function_check_binary_image(IMG_REF);
 
 for II=(INITN+[0:(N-1)])
-    imagefilename{II-INITN+1}=['../images/placa1/' num2str(II) '.jpg (green).bmp'];
+    imagefilename{II-INITN+1}=fullfile(DIRIMAGES,[ num2str(II) '.bmp']);
     IMG_OBJ{II-INITN+1}=imread(imagefilename{II-INITN+1});
     IMG_OBJ{II-INITN+1}=function_check_binary_image(IMG_OBJ{II-INITN+1});
 end
@@ -79,6 +81,8 @@ fprintf(stdout,'DATA saved [OK]\n',outdatafile);
 %% OUTPUTDIR
 DATA=load(outdatafile);
 
+graphics_toolkit gnuplot
+
 xi =[min(DATA(:,1)):max(DATA(:,1))];
 yi =[min(DATA(:,2)):max(DATA(:,2))];
 [xxi, yyi] = meshgrid ( xi,yi);
@@ -86,6 +90,8 @@ zzi = griddata(DATA(:,1), DATA(:,2), DATA(:,3), xxi, yyi);
 
 figure(1)
 mesh(xxi,yyi,zzi)
+surf(xxi,yyi,zzi)
+colormap(jet)
 print(gcf,fullfile(OUTPUTDIR,['img_all_mesh.png']),'-dpng');
 
 figure(2)
