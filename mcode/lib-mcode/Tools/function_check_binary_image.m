@@ -11,11 +11,12 @@ function IMG_BIN=function_check_binary_image(IMG)
 
     IMG_BIN = IMG/MAXIMO;
 
-    if(max(max(IMG))>1)
+    if(max(max(IMG_BIN))>1)
+        MAX_VALUE=max(max(IMG))
         error('The image should be a binary image. max pixel value > 1');
     endif
 
-    if(min(min(IMG))<0)
+    if(min(min(IMG_BIN))<0)
         error('The image should be a binary image. max pixel value <0');
     endif
 

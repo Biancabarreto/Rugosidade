@@ -10,7 +10,7 @@ addpath(genpath('lib-mcode'))
 N=40;
 INITN=0;
 REFIMAGE='0a.bmp';
-DIRIMAGES='/home/fernando/Downloads/drive-download-20190708T165253Z-001/Compost barn/16';
+DIRIMAGES='/home/fernando/Downloads/16-20190718T142638Z-001/16';
 
 OUTPUTDIR='output3dpoint';
 outdatafile=fullfile(OUTPUTDIR,'dataxyz.dat');
@@ -20,10 +20,16 @@ mkdir(OUTPUTDIR);
 
 IMG_REF = imread(fullfile(DIRIMAGES,REFIMAGE));
 IMG_REF =function_check_binary_image(IMG_REF);
+if (size(IMG_REF,3)==3)
+    	IMG_REF=IMG_REF;
+endif
 
 for II=(INITN+[0:(N-1)])
     imagefilename{II-INITN+1}=fullfile(DIRIMAGES,[ num2str(II) '.bmp']);
     IMG_OBJ{II-INITN+1}=imread(imagefilename{II-INITN+1});
+    if (size(IMG_OBJ{II-INITN+1},3)==3)
+    	IMG_OBJ{II-INITN+1}=rgb2gray(IMG_OBJ{II-INITN+1});
+    endif
     IMG_OBJ{II-INITN+1}=function_check_binary_image(IMG_OBJ{II-INITN+1});
 end
 
