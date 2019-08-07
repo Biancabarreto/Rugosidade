@@ -7,17 +7,17 @@ addpath(genpath('lib-mcode'))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Só modifica aquí
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-N=39;
+ENDN=77;
 INITN=0;
 REFIMAGE='0a.bmp';
-DIRIMAGES='/home/fernando/Downloads/drive-download-20190708T165253Z-001/Compost barn/16';
+DIRIMAGES='/home/fernando/Downloads/Rugosidade/images/test';
 
 OUTPUTDIR='output3d';
 outdatafile=fullfile(OUTPUTDIR,'dataxyz.dat');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 mkdir(OUTPUTDIR);
-
+N=ENDN-INITN+1;
 IMG_REF = imread(fullfile(DIRIMAGES,REFIMAGE));
 IMG_REF =function_check_binary_image(IMG_REF);
 
@@ -44,7 +44,7 @@ for II=(INITN+[0:(N-1)])
     fprintf(stdout,'\nWorking file:%s\n',imagefilename{II-INITN+1});
 
     R = LineDetector(IMG_OBJ{II-INITN+1});  %% Crio um line detector R
-    R.set_reconstruction_parts(14); %% Estabelecer em quantas partes será reconstruido
+    R.set_reconstruction_parts(12); %% Estabelecer em quantas partes será reconstruido
     R.set_reconstruction_level(0);  %% Estabelecer o nivel de reconstrução
     R.set_reconstruction_umbral(32); %% para aceptar cumulos
 
@@ -76,10 +76,18 @@ for II=(INITN+[0:(N-1)])
     save ('-ascii',datafile, 'DATAPART');
     fprintf(stdout,'DATA saved [OK]\n',datafile);
 
+    close all;
 end
 
-fprintf(stdout,'\nSaving DATA in:%s\n',outdatafile);
-DATA=[XX,YY,ZZ];
+for II=[INITN:ENDN]
+    datafile=fullfile(OUTPUTDIR,['dataxyz' num2str(II) '.dat']);
+    if(II==INITN)
+        DATA=load(datafile);
+    else
+        DATA=[DATA;load(datafile)];
+    endif
+endfor
+
 save ('-ascii',outdatafile, 'DATA');
 fprintf(stdout,'DATA saved [OK]\n',outdatafile);
 
