@@ -10,7 +10,7 @@ addpath(genpath('lib-mcode'))
 ENDN=77;
 INITN=0;
 REFIMAGE='0a.bmp';
-DIRIMAGES='/home/fernando/Downloads/Rugosidade/images/test';
+DIRIMAGES='../images/test';
 
 OUTPUTDIR='output3d';
 outdatafile=fullfile(OUTPUTDIR,'dataxyz.dat');

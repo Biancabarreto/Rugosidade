@@ -7,10 +7,10 @@ addpath(genpath('lib-mcode'))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Só modifica aquí
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-N=40;
+ENDN=77;
 INITN=0;
 REFIMAGE='0a.bmp';
-DIRIMAGES='/home/fernando/Downloads/16-20190718T142638Z-001/16';
+DIRIMAGES='../images/test';
 
 OUTPUTDIR='output3dpoint';
 outdatafile=fullfile(OUTPUTDIR,'dataxyz.dat');
@@ -24,7 +24,7 @@ if (size(IMG_REF,3)==3)
     	IMG_REF=IMG_REF;
 endif
 
-for II=(INITN+[0:(N-1)])
+for II=[INITN:ENDN]
     imagefilename{II-INITN+1}=fullfile(DIRIMAGES,[ num2str(II) '.bmp']);
     IMG_OBJ{II-INITN+1}=imread(imagefilename{II-INITN+1});
     if (size(IMG_OBJ{II-INITN+1},3)==3)
@@ -44,7 +44,7 @@ print(gcf,fullfile(OUTPUTDIR,'img_ref.png'),'-dpng');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% STEP 3
 
-for II=(INITN+[0:(N-1)])
+for II=[INITN:ENDN]
 
     fprintf(stdout,'\nWorking file:%s\n',imagefilename{II-INITN+1});
 
@@ -94,13 +94,16 @@ yi =[min(DATA(:,2)):max(DATA(:,2))];
 [xxi, yyi] = meshgrid ( xi,yi);
 zzi = griddata(DATA(:,1), DATA(:,2), DATA(:,3), xxi, yyi);
 
-figure(1)
+hfig1=figure(1)
 mesh(xxi,yyi,zzi)
 surf(xxi,yyi,zzi)
 colormap(jet)
 print(gcf,fullfile(OUTPUTDIR,['img_all_mesh.png']),'-dpng');
+hgsave (hfig1,fullfile(OUTPUTDIR,['img_all_mesh.txt']))
 
-figure(2)
+
+hfig2=figure(2)
 scatter3(DATA(:,1), DATA(:,2), DATA(:,3))
 print(gcf,fullfile(OUTPUTDIR,['img_all_scatter3.png']),'-dpng');
+hgsave (hfig2,fullfile(OUTPUTDIR,['img_all_scatter3.txt']))
 
