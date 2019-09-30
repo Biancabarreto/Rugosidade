@@ -87,23 +87,6 @@ fprintf(stdout,'DATA saved [OK]\n',outdatafile);
 %% OUTPUTDIR
 DATA=load(outdatafile);
 
-graphics_toolkit gnuplot
-
-xi =[min(DATA(:,1)):max(DATA(:,1))];
-yi =[min(DATA(:,2)):max(DATA(:,2))];
-[xxi, yyi] = meshgrid ( xi,yi);
-zzi = griddata(DATA(:,1), DATA(:,2), DATA(:,3), xxi, yyi);
-
-hfig1=figure(1)
-mesh(xxi,yyi,zzi)
-surf(xxi,yyi,zzi)
-colormap(jet)
-print(gcf,fullfile(OUTPUTDIR,['img_all_mesh.png']),'-dpng');
-hgsave (hfig1,fullfile(OUTPUTDIR,['img_all_mesh.txt']))
-
-
-hfig2=figure(2)
-scatter3(DATA(:,1), DATA(:,2), DATA(:,3))
-print(gcf,fullfile(OUTPUTDIR,['img_all_scatter3.png']),'-dpng');
-hgsave (hfig2,fullfile(OUTPUTDIR,['img_all_scatter3.txt']))
+FATORZ=0.1;
+plot_teste_multiple(DATA,OUTPUTDIR,FATORZ);
 
