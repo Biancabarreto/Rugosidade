@@ -98,5 +98,5 @@ close all
 %% OUTPUTDIR
 DATA=load(outdatafile);
 
-FATOR=[5.0/150 5/10 0.1];
+FATOR=[5.0/150 1 0.1];
 plot_teste_multiple(DATA,OUTPUTDIR,FATOR);
