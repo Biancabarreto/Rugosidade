@@ -12,7 +12,7 @@ INITN=0;
 REFIMAGE='0a.bmp';
 DIRIMAGES='../images/test';
 
-OUTPUTDIR='output3d';
+OUTPUTDIR='output3dpoly';
 outdatafile=fullfile(OUTPUTDIR,'dataxyz.dat');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
