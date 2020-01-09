@@ -57,7 +57,7 @@ figure
 plot_variogram_curves(VARS_MAT,OUTPUTDIR,DAT);
 
 
-[curves1, curves2, IDG,G1,G2]=func_kmeans2(VARS_MAT);
+[curves1, curves2, IDG,c1,c2]=func_kmeans2(VARS_MAT);
 
 figure
 plot_2_curve_blocks(curves1,curves2,OUTPUTDIR,DAT);
