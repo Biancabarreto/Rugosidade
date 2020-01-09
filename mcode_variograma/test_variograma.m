@@ -60,7 +60,7 @@ plot_variogram_curves(VARS_MAT,OUTPUTDIR,DAT);
 [curves1, curves2, IDG,c1,c2]=func_kmeans2(VARS_MAT);
 
 figure
-plot_2_curve_blocks(curves1,curves2,OUTPUTDIR,DAT);
+plot_2_curve_blocks(curves1,curves2,c1,c2,OUTPUTDIR,DAT);
 
 RATIO=size(curves2,1)/(size(curves1,1)+size(curves2,1))*100.0
 save (fullfile(OUTPUTDIR,'ratio.txt'), "RATIO")
