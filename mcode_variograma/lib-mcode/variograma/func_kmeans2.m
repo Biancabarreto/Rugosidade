@@ -1,4 +1,4 @@
-function [curves1, curves2, IDG, G1, G2]=func_kmeans2(VARS_MAT)
+function [curves1, curves2, IDG, c1, c2]=func_kmeans2(VARS_MAT)
 
     N=size(VARS_MAT,1);
     M=size(VARS_MAT,2);
@@ -8,7 +8,7 @@ function [curves1, curves2, IDG, G1, G2]=func_kmeans2(VARS_MAT)
     [MAX IDMAX]=max(VARS_MAT(:,round(M/2)));
     [MIN IDMIN]=min(VARS_MAT(:,round(M/2)));
 
-    c1=VARS_MAT(IDMIN,:);
+    c1=zeros(size(VARS_MAT(1,:)));
     c2=VARS_MAT(IDMAX,:);
 
     format long
@@ -37,7 +37,8 @@ function [curves1, curves2, IDG, G1, G2]=func_kmeans2(VARS_MAT)
             endif    
         endfor
 
-        nc1=get_new_mean_curve(VARS_MAT,G1);
+        %nc1=get_new_mean_curve(VARS_MAT,G1);
+        nc1=c1;
         nc2=get_new_mean_curve(VARS_MAT,G2);
         
         dc1=dist_between_curves(c1,nc1);
