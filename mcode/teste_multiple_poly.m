@@ -2,6 +2,8 @@
 pkg load image
 clear all
 close all
+page_screen_output(0)
+page_output_immediately(1)
 addpath(genpath('lib-mcode'))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
