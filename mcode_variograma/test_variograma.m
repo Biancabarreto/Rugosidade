@@ -62,7 +62,7 @@ plot_variogram_curves(VARS_MAT,OUTPUTDIR,DAT);
 figure
 plot_2_curve_blocks(curves1,curves2,OUTPUTDIR,DAT);
 
-RATIO=size(curves1,1)/size(curves2,1)
+RATIO=size(curves2,1)/(size(curves2,1)+size(curves2,1))
 
 figure
 plot_teste_rugosidade(fpath,fname,IDG,OUTPUTDIR,[1 1 1]);
