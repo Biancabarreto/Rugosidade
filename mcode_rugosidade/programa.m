@@ -2,10 +2,11 @@
 clear all
 addpath(genpath('mfiles'))
 
-FILENAME='../mcode/output3dpoint/dataxyz.dat';
+%FILENAME='../mcode/output3dpoint/dataxyz.dat';
+FILENAME='dataxyz.txt';
 OUTPUTDIR='output';
-FATOR=[5.0/150 1 0.1];
-D=1.5;
+FATOR=[1 1 1];
+D=3.5;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -17,7 +17,9 @@ function [RR MEAN]=func_calc_rugosidade(DATA,D,SHOW=false)
             %POINTS=func_find_points_2(LINE,LIN,COL,D);
 
             if size(POINTS,1)==0
-                printf(stdout,'POINTS size 0\n');
+                Po=LINE{LIN}(COL,:);
+                TEXT=sprintf('POINTS size 0. P0:[%f %f %f]\n',Po(1),Po(2),Po(3));
+                error(TEXT)
             endif
 
             PLANE=func_get_plane(POINTS);
