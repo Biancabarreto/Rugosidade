@@ -15,7 +15,7 @@ DATA=DATARAW.*FATOR;
 
 [RR MEAN]=func_calc_rugosidade(DATA,D,ENABLE_PLOT);
 
-plot_teste_multiple([DATA(:,1) DATA(:,2) RR],OUTPUTDIR,FATOR)
+plot_teste_multiple([DATA(:,1) DATA(:,2) RR],OUTPUTDIR)
 
 outdatafile=fullfile(OUTPUTDIR,'rugosidade.dat');
 save('-ascii',outdatafile,'RR');
