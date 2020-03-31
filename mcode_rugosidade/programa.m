@@ -2,7 +2,6 @@
 clear all
 addpath(genpath('mfiles'))
 
-%FILENAME='../mcode/output3dpoint/dataxyz.dat';
 FILENAME='dataxyz.txt';
 OUTPUTDIR='output';
 FATOR=[1 1 1];
