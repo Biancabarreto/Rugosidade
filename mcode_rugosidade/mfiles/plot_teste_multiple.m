@@ -6,8 +6,9 @@ function plot_teste_multiple(DATA,OUTPUTDIR,FATOR)
     FATORY=FATOR(2);
     FATORZ=FATOR(3);
 
-    xi =[min(DATA(:,1)):max(DATA(:,1))];
-    yi =[min(DATA(:,2)):max(DATA(:,2))];
+    LL=64;
+    xi =linspace(min(DATA(:,1)),max(DATA(:,1)),LL);
+    yi =linspace(min(DATA(:,2)),max(DATA(:,2)),LL);
     [xxi, yyi] = meshgrid ( xi,yi);
     zzi = griddata(DATA(:,1), DATA(:,2), DATA(:,3), xxi, yyi);
 
