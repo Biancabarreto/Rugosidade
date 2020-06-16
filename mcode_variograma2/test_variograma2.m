@@ -44,8 +44,8 @@ end
 disp('');
 
 
-MALL=min(LEN_VARS);
-M=round(MALL/3); %%% quanto vou a variacionar 1/3 del ancho de la foto
+% MALL=min(LEN_VARS);
+M=50; %% round(MALL/3); %%% quanto vou a variacionar 1/3 del ancho de la foto
 VARS_MAT=zeros(N,M);
 for II=1:N
     VARS_MAT(II,:)=VARS{II}(1:M);
@@ -61,6 +61,6 @@ plot_variogram_curves(VARS_MAT,OUTPUTDIR,DAT);
 figure
 plot_2_curve_blocks(curves1,curves2,c1,c2,OUTPUTDIR,DAT);
 
-Vvalue=mean(max(VARS_MAT))
+Vvalue=mean(VARS_MAT(:,end))
 save (fullfile(OUTPUTDIR,'Vvalue.txt'), "Vvalue")
 
