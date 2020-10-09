@@ -9,12 +9,12 @@ addpath(genpath('lib-mcode'))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Só modifica aquí
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-ENDN=77;
+ENDN=25;
 INITN=0;
 REFIMAGE='0a.bmp';
-DIRIMAGES='../images/test';
+DIRIMAGES='/home/fernando/Downloads/CD4/Processadas';
 
-OUTPUTDIR='output3dpoint';
+OUTPUTDIR='/home/fernando/Downloads/CD4/output3dpoint';
 outdatafile=fullfile(OUTPUTDIR,'dataxyz.dat');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

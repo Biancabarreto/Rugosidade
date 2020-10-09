@@ -1,6 +1,4 @@
 function plot_teste_multiple(DATA,OUTPUTDIR,FATOR)
-    graphics_toolkit gnuplot
-
 
     FATORX=FATOR(1);
     FATORY=FATOR(2);
